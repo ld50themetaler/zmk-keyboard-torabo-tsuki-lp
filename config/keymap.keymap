@@ -5,13 +5,32 @@
 #include <dt-bindings/zmk/pointing.h>
 
 / {
-    combos {
-        compatible = "zmk,combos";
 
-        bt_clear {
-            bindings = <&bt BT_CLR>;
-            key-positions = <28 29>;
-            layers = <2>;
+    // --- 追加: Mod-Tapの挙動をカスタマイズ ---
+    behaviors {
+        // デフォルトのMod-Tap(&mt)の挙動を上書きし、QMK風の快適な設定に変更します
+        mt: mod_tap {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            
+            // --- ここからがカスタマイズ項目です ---
+
+            // タップとホールドを認識する時間。200msに設定。
+            tapping-term-ms = <200>;
+            
+            // 'tap-preferred'フレーバーを選択。
+            // これにより、高速でキーを連続入力（ローリング）した際に、
+            // ホールド（モディファイア）が誤爆するのを防ぎます。
+            // QMKの`IGNORE_MOD_TAP_INTERRUPT`に近い挙動です。
+            flavor = "tap-preferred"; 
+
+            // (オプション) この時間内の素早い連続タップは、強制的にタップとして扱います。
+            // これにより、スペースキーやエンターキーの連続タップがより確実になります。
+            quick-tap-ms = <150>;
+
+            // --- ここまでがカスタマイズ項目です ---
+
+            bindings = <&kp>, <&kp>;
         };
     };
 
