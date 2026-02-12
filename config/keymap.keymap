@@ -5,27 +5,30 @@
 #include <dt-bindings/zmk/pointing.h>
 
 / {
-
     // --- 追加: Mod-Tapの挙動をカスタマイズ ---
+
     behaviors {
         // デフォルトのMod-Tap(&mt)の挙動を上書きし、QMK風の快適な設定に変更します
+
         mt: mod_tap {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            
-            // --- ここからがカスタマイズ項目です ---
 
+            // --- ここからがカスタマイズ項目です ---
             // タップとホールドを認識する時間。200msに設定。
+
             tapping-term-ms = <200>;
-            
+
             // 'tap-preferred'フレーバーを選択。
             // これにより、高速でキーを連続入力（ローリング）した際に、
             // ホールド（モディファイア）が誤爆するのを防ぎます。
             // QMKの`IGNORE_MOD_TAP_INTERRUPT`に近い挙動です。
-            flavor = "tap-preferred"; 
+
+            flavor = "tap-preferred";
 
             // (オプション) この時間内の素早い連続タップは、強制的にタップとして扱います。
             // これにより、スペースキーやエンターキーの連続タップがより確実になります。
+
             quick-tap-ms = <150>;
 
             // --- ここまでがカスタマイズ項目です ---
@@ -35,6 +38,7 @@
     };
 
     // 日本語入力のオンオフで、ChromeでAltキーが暴発するための対策マクロ
+
     macros {
         macro_alt_grave: macro_alt_grave {
             compatible = "zmk,behavior-macro";
@@ -42,10 +46,12 @@
             wait-ms = <5>;
             tap-ms = <5>;
             bindings =
-                <&macro_press &kp LALT>
-                , <&macro_tap &kp GRAVE>
-                , <&macro_release &kp LALT>
-            ;
+                <&macro_press>,
+                <&kp LALT>,
+                <&macro_tap>,
+                <&kp GRAVE>,
+                <&macro_release>,
+                <&kp LALT>;
         };
     };
 
@@ -64,21 +70,21 @@
 
         layer_1 {
             bindings = <
-&trans  &trans  &trans  &trans     &trans     &trans                  &trans  &trans     &trans     &trans  &trans  &trans
-&trans  &trans  &trans  &trans     &trans     &trans                  &trans  &trans     &trans     &trans  &trans  &trans
-&trans  &trans  &trans  &mkp RCLK  &mkp LCLK  &trans  &trans  &trans  &trans  &mkp LCLK  &mkp RCLK  &trans  &trans  &trans
-&trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans
-&trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans
+&trans  &trans              &trans   &trans           &trans               &trans                   &trans            &trans     &trans         &trans     &trans     &trans
+&trans  &kp F1              &kp F2   &kp F3           &kp F4               &kp F5                   &trans            &kp HOME   &kp PAGE_DOWN  &kp PG_UP  &kp END    &trans
+&trans  &kp F6              &kp F7   &kp F8           &kp F9               &kp F10  &trans  &trans  &macro_alt_grave  &kp LEFT   &kp DOWN       &kp UP     &kp RIGHT  &trans
+&trans  &mt LEFT_SHIFT F11  &kp F12  &kp PRINTSCREEN  &kp PAUSE_BREAK      &kp INS  &trans  &trans  &mkp MCLK         &mkp LCLK  &mo 4          &mkp RCLK  &trans     &trans
+&trans  &trans              &trans   &trans           &mt LEFT_ALT DELETE  &trans   &trans  &trans  &mo 3             &trans     &trans         &trans     &trans     &trans
             >;
         };
 
         layer_2 {
             bindings = <
-&trans  &trans            &trans            &trans      &trans      &trans                      &trans          &trans         &trans            &trans             &trans         &trans
-&trans  &kp LS(NUMBER_1)  &kp LS(NUMBER_2)  &kp LS(N3)  &kp LS(N4)  &kp LS(N5)                  &kp LS(N6)      &kp LS(N7)     &kp LS(N8)        &kp LS(N9)         &kp LS(N0)     &trans
-&trans  &kp N1            &kp N2            &kp N3      &kp N4      &kp N5      &trans  &trans  &kp LEFT_BRACE  &kp MINUS      &kp EQUAL         &kp RIGHT_BRACE    &kp COLON      &trans
-&trans  &kp N6            &kp N7            &kp N8      &kp N9      &kp N0      &trans  &trans  &kp LS(MINUS)   &kp LS(EQUAL)  &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &kp BACKSLASH  &trans
-&trans  &trans            &trans            &trans      &trans      &trans      &trans  &trans  &kp TAB         &kp DEL        &trans            &trans             &trans         &trans
+&trans  &trans  &trans  &trans      &trans  &trans                   &trans     &trans                &trans     &trans     &trans     &trans
+&trans  &kp N1  &kp N2  &kp N3      &kp N4  &kp N5                   &kp N6     &kp N7                &kp N8     &kp N9     &kp N0     &trans
+&trans  &trans  &trans  &kp ESCAPE  &trans  &kp TAB  &trans  &trans  &kp LBKT   &kp RIGHT_BRACKET     &kp SLASH  &kp EQUAL  &kp MINUS  &trans
+&trans  &trans  &trans  &trans      &trans  &trans   &trans  &trans  &kp GRAVE  &kp NON_US_BACKSLASH  &trans     &trans     &trans     &trans
+&trans  &trans  &trans  &trans      &trans  &mo 3    &trans  &trans  &trans     &trans                &trans     &trans     &trans     &trans
             >;
         };
 
@@ -89,6 +95,16 @@
 &trans  &kp F6   &kp F7   &kp F8        &kp F9        &kp F10     &trans  &trans  &kp LEFT          &kp DOWN   &kp UP_ARROW   &kp RIGHT  &kp TAB     &trans
 &trans  &kp F11  &kp F12  &out OUT_USB  &out OUT_BLE  &bt BT_NXT  &trans  &trans  &kp SINGLE_QUOTE  &kp DQT    &kp GRAVE      &kp TILDE  &kp PIPE    &trans
 &trans  &trans   &trans   &trans        &kp DELETE    &kp TAB     &trans  &trans  &trans            &trans     &trans         &trans     &trans      &trans
+            >;
+        };
+
+        layer_4 {
+            bindings = <
+&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
             >;
         };
     };
