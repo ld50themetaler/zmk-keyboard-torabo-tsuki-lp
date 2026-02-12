@@ -34,6 +34,21 @@
         };
     };
 
+    // 日本語入力のオンオフで、ChromeでAltキーが暴発するための対策マクロ
+    macros {
+        macro_alt_grave: macro_alt_grave {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <5>;
+            tap-ms = <5>;
+            bindings =
+                <&macro_press &kp LALT>
+                , <&macro_tap &kp GRAVE>
+                , <&macro_release &kp LALT>
+            ;
+        };
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
